@@ -1,6 +1,9 @@
 package pl.coderslab.hikeappplanner.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
@@ -17,8 +20,12 @@ public class Hike {
     @Size(max = 50, message = "pole może mieć {max} znaków")
     private String name;
 
+    @FutureOrPresent(message = "data niepoprawna, wybierz przyszłą datę")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
 
+    @FutureOrPresent(message = "data niepoprawna, wybierz przyszłą datę")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
 
     @ManyToOne

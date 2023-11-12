@@ -1,8 +1,6 @@
 package pl.coderslab.hikeappplanner.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "trails")
@@ -24,11 +22,9 @@ public class Trail {
     @JoinColumn(name = "category_id")
     private TrailCategory category;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "trails_spots",
-            joinColumns = {@JoinColumn(name = "trail_id")},
-            inverseJoinColumns = {@JoinColumn(name = "spot_id")})
-    private List<Spot> spots = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "area_id")
+    private Area area;
 
     private double startLat;
 
@@ -41,12 +37,13 @@ public class Trail {
     public Trail() {
     }
 
-    public Trail(String name, String color, double length, String description, TrailCategory category, double startLat, double startLon, double endLat, double endLon) {
+    public Trail(String name, String color, double length, String description, TrailCategory category, Area area, double startLat, double startLon, double endLat, double endLon) {
         this.name = name;
         this.color = color;
         this.length = length;
         this.description = description;
         this.category = category;
+        this.area = area;
         this.startLat = startLat;
         this.startLon = startLon;
         this.endLat = endLat;
@@ -77,8 +74,8 @@ public class Trail {
         return category;
     }
 
-    public List<Spot> getSpots() {
-        return spots;
+    public Area getArea() {
+        return area;
     }
 
     public double getStartLat() {
@@ -106,6 +103,7 @@ public class Trail {
                 ", length=" + length +
                 ", description='" + description + '\'' +
                 ", category=" + category +
+                ", area=" + area +
                 ", startLat=" + startLat +
                 ", startLon=" + startLon +
                 ", endLat=" + endLat +

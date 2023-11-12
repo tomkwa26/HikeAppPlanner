@@ -1,6 +1,7 @@
 package pl.coderslab.hikeappplanner.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "selections")
@@ -22,18 +23,16 @@ public class DailySelection {
     @JoinColumn(name = "trail_id")
     private Trail trail;
 
-    @ManyToOne
-    @JoinColumn(name = "spot_id")
-    private Spot spot;
+    private LocalDate date;
 
     public DailySelection() {
     }
 
-    public DailySelection(Hike hike, TrailCategory category, Trail trail, Spot spot) {
+    public DailySelection(Hike hike, TrailCategory category, Trail trail, LocalDate date) {
         this.hike = hike;
         this.category = category;
         this.trail = trail;
-        this.spot = spot;
+        this.date = date;
     }
 
     public Long getId() {
@@ -68,12 +67,12 @@ public class DailySelection {
         this.trail = trail;
     }
 
-    public Spot getSpot() {
-        return spot;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setSpot(Spot spot) {
-        this.spot = spot;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     @Override
@@ -83,7 +82,7 @@ public class DailySelection {
                 ", hike=" + hike +
                 ", category=" + category +
                 ", trail=" + trail +
-                ", spot=" + spot +
+                ", date=" + date +
                 '}';
     }
 }
