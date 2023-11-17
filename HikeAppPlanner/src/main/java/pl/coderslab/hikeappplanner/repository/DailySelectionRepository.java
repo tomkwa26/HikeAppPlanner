@@ -7,4 +7,6 @@ import pl.coderslab.hikeappplanner.model.Hike;
 import java.util.List;
 
 public interface DailySelectionRepository extends JpaRepository<DailySelection, Long> {
+
+    List<DailySelection> findAllByHikeId(Long hikeId);
 }

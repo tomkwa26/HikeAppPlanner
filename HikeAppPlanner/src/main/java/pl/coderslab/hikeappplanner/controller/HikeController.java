@@ -12,6 +12,7 @@ import pl.coderslab.hikeappplanner.model.Area;
 import pl.coderslab.hikeappplanner.model.DailySelection;
 import pl.coderslab.hikeappplanner.model.Hike;
 import pl.coderslab.hikeappplanner.repository.AreaRepository;
+import pl.coderslab.hikeappplanner.repository.DailySelectionRepository;
 import pl.coderslab.hikeappplanner.repository.HikeRepository;
 
 import javax.validation.Valid;
@@ -25,10 +26,12 @@ public class HikeController {
 
     private final HikeRepository hikeRepository;
     private final AreaRepository areaRepository;
+    private final DailySelectionRepository selectionRepository;
 
-    public HikeController(HikeRepository hikeRepository, AreaRepository areaRepository) {
+    public HikeController(HikeRepository hikeRepository, AreaRepository areaRepository, DailySelectionRepository selectionRepository) {
         this.hikeRepository = hikeRepository;
         this.areaRepository = areaRepository;
+        this.selectionRepository = selectionRepository;
     }
 
     @ModelAttribute("areas")
@@ -38,39 +41,41 @@ public class HikeController {
 
     @GetMapping("/create")
     public String showHikeForm(Model model) {
+
+        // przekazanie danych do modelu
         model.addAttribute("hike", new Hike());
         model.addAttribute("areas", areas());
+
+        // przekierowanie na widok tworzenia wyprawy
         return "/hikes/createHikeForm";
     }
 
     @PostMapping("/create")
-    public String createHike(@Valid Hike hike, BindingResult result, RedirectAttributes redirectAttributes) {
+    public String createHike(@Valid Hike hike, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "/hikes/createHikeForm";
         }
 
         // zapisanie wyprawy
-        hikeRepository.save(hike);
+        Hike savedHike = hikeRepository.save(hike);
 
-        // uzyskanie wybranych dat i obszaru
-        LocalDate startDate = hike.getStartDate();
-        LocalDate endDate = hike.getEndDate();
+        // uzyskanie wybranych dat
+        LocalDate startDate = savedHike.getStartDate();
+        LocalDate endDate = savedHike.getEndDate();
 
-        List<LocalDate> dates = new ArrayList<>();
+        // generowanie pustych wpisów dla każdego dnia wyprawy
+        List<DailySelection> selections = new ArrayList<>();
         LocalDate currentDate = startDate;
         while (!currentDate.isAfter(endDate)) {
-            dates.add(currentDate);
+            DailySelection dailySelection = new DailySelection(savedHike, null, null, currentDate);
+            selections.add(dailySelection);
             currentDate = currentDate.plusDays(1);
         }
 
-//        // stworzenie obiektu DailySelection i przypisanie wyprawy
-//        DailySelection dailySelection = new DailySelection();
-//        dailySelection.setHike(hike);
+        // zapisanie pustych wpisów do bazy danych
+        selectionRepository.saveAll(selections);
 
-        // przekazanie danych do widoku
-        redirectAttributes.addFlashAttribute("dates", dates);
-
-        // przekierowanie na widok
-        return "redirect:/select/category";
+        // przekierowanie na widok wyboru kategorii szlaków z przekazaniem parametru
+        return "redirect:/select/category?hikeId=" + savedHike.getId();
     }
 }

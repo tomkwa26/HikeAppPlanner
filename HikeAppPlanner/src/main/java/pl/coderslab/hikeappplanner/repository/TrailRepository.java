@@ -11,6 +11,5 @@ import java.util.List;
 
 public interface TrailRepository extends JpaRepository<Trail, Long> {
 
-    @Query("SELECT t FROM Trail t WHERE t.area = :area AND t.category = :category")
-    List<Trail> findTrailsByAreaAndCategory(@Param("area") Area area, @Param("category") TrailCategory category);
+    List<Trail> findAllByCategoryInAndArea(List<TrailCategory> categories, Area area);
 }

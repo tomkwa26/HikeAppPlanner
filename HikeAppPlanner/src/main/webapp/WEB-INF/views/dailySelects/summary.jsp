@@ -1,18 +1,16 @@
 <%--
   Created by IntelliJ IDEA.
   User: tomasz
-  Date: 10.11.2023
-  Time: 19:27
+  Date: 13.11.2023
+  Time: 17:51
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>Wybierz szlak</title>
+    <title>Podsumowanie wyprawy</title>
     <style>
-
         body {
             background-color: #E6E6E6;
             font-family: Arial, sans-serif;
@@ -63,18 +61,19 @@
     </style>
 </head>
 <body>
-<h1>Wybierz szlak</h1>
-<form:form method="post" modelAttribute="selection" action="/select/trail">
-    <c:if test="${not empty trails}">
-        <label for="trail">Wybierz szlak</label>
-        <form:select path="trail">
-            <form:option value="" label="Wybierz szlak"/>
-            <form:options items="${trails}" itemLabel="name" itemValue="id"/>
-        </form:select>
-    </c:if>
+<h1>Podsumowanie wyprawy</h1>
 
-    <button type="submit">Zapisz szlak</button>
-</form:form>
+<p>Nazwa wyprawy: ${hike.name}</p>
+<p>Data początkowa: ${hike.startDate}</p>
+<p>Data końcowa: ${hike.endDate}</p>
 
+<h2>Wybrany obszar, kategorie i szlaki:</h2>
+<c:forEach items="${dailySelections}" var="selection">
+    <p>Obszar: ${dailySelections.hike.area}</p>
+    <p>Data: ${dailySelections.date}</p>
+    <p>Kategoria szlaku: ${dailySelections.category.name}</p>
+    <p>Szlak: ${dailySelections.trail.name}</p>
+    <hr/>
+</c:forEach>
 </body>
 </html>

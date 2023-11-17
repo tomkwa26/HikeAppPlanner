@@ -3,15 +3,13 @@ package pl.coderslab.hikeappplanner.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.coderslab.hikeappplanner.model.*;
 import pl.coderslab.hikeappplanner.repository.DailySelectionRepository;
 import pl.coderslab.hikeappplanner.repository.HikeRepository;
 import pl.coderslab.hikeappplanner.repository.TrailCategoryRepository;
 import pl.coderslab.hikeappplanner.repository.TrailRepository;
-
-import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/select")
@@ -34,32 +32,71 @@ public class DailySelectionController {
     }
 
     @GetMapping("/category")
-    public String selectTrailCategory(@ModelAttribute("dates") List<LocalDate> dates,
-                                      Model model) {
-        List<TrailCategory> categories = categoryRepository.findAll();
-        model.addAttribute("selection", new DailySelection());
+    public String selectTrailCategory(@RequestParam("hikeId") Long hikeId, Model model) {
+
+        // pobranie pustych wpisów związanych z daną wyprawą
+        List<DailySelection> dailySelections = selectionRepository.findAllByHikeId(hikeId);
+
+        // pobranie dostępnych kategorii dla wybranej area
+        List<TrailCategory> categories = categoryRepository.findAllByAreasContains(dailySelections.get(0).getHike().getArea());
+
+        // przekazanie danych do modelu
+        model.addAttribute("dailySelection", new DailySelection());
+        model.addAttribute("dailySelections", dailySelections);
         model.addAttribute("categories", categories);
-        model.addAttribute("dates", dates);
-        return "selections/selectCategoryForm";
+        model.addAttribute("hikeId", hikeId);
+        return "dailySelects/selectCategoryForm";
     }
 
     @PostMapping("/category")
-    public String saveSelectCategory(@ModelAttribute("selection") DailySelection dailySelection, RedirectAttributes redirectAttributes) {
-        selectionRepository.save(dailySelection);
-        redirectAttributes.addFlashAttribute("selection", dailySelection);
-        return "redirect:/select/trail";
+    public String saveSelectCategory(@RequestParam("hikeId") Long hikeId, @ModelAttribute("dailySelections") List<DailySelection> dailySelections) {
+
+        // zapisanie wyborów kategorii dla poszczególnych dni
+        selectionRepository.saveAll(dailySelections);
+
+        // przekierowanie na widok wyboru szlaków
+        return "redirect:/select/trail?hikeId=" + hikeId;
     }
 
     @GetMapping("/trail")
-    public String selectTrail(@ModelAttribute("selection") DailySelection dailySelection, Model model) {
-        List<Trail> trails = trailRepository.findTrailsByAreaAndCategory(dailySelection.getHike().getArea(), dailySelection.getCategory());
+    public String selectTrail(@RequestParam("hikeId") Long hikeId, Model model) {
+
+        // pobranie pustych wpisów związanych z daną wyprawą
+        List<DailySelection> dailySelections = selectionRepository.findAllByHikeId(hikeId);
+
+        // pobieranie dostępnych szlaków dla wybranej kategorii szlaków
+        List<Trail> trails = trailRepository.findAllByCategoryInAndArea(dailySelections.stream()
+                .map(DailySelection::getCategory)
+                .collect(Collectors.toList()), dailySelections.get(0).getHike().getArea());
+
+        // przekazanie danych do modelu
+        model.addAttribute("dailySelection", new DailySelection());
+        model.addAttribute("dailySelections", dailySelections);
         model.addAttribute("trails", trails);
-        return "selections/selectTrailForm";
+        model.addAttribute("hikeId", hikeId);
+        return "dailySelects/selectTrailForm";
     }
 
     @PostMapping("/trail")
-    public String saveSelectTrail(@ModelAttribute DailySelection dailySelection) {
-        selectionRepository.save(dailySelection);
-        return "redirect:/summary";
+    public String saveSelectTrail(@RequestParam("hikeId") Long hikeId, @ModelAttribute("dailySelections") List<DailySelection> dailySelections) {
+
+        // zapisanie wyborów kategorii dla poszczególnych dni
+        selectionRepository.saveAll(dailySelections);
+
+        // przekierowanie na widok podsumowania
+        return "redirect:/select/summary?hikeId=" + hikeId;
+    }
+
+    @GetMapping("/summary")
+    public String showSummary(@RequestParam("hikeId") Long hikeId, Model model) {
+
+        // pobranie wyprawy i powiązanych z nią wyborów
+        Hike hike = hikeRepository.findById(hikeId).orElseThrow();
+        List<DailySelection> dailySelections = selectionRepository.findAllByHikeId(hikeId);
+
+        // przekazanie danych do modelu
+        model.addAttribute("hike", hike);
+        model.addAttribute("dailySelections", dailySelections);
+        return "dailySelects/summary";
     }
 }
