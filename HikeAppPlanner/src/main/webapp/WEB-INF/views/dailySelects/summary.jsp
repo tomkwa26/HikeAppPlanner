@@ -69,10 +69,10 @@
 
 <h2>Wybrany obszar, kategorie i szlaki:</h2>
 <c:forEach items="${dailySelections}" var="selection">
-    <p>Obszar: ${dailySelections.hike.area}</p>
-    <p>Data: ${dailySelections.date}</p>
-    <p>Kategoria szlaku: ${dailySelections.category.name}</p>
-    <p>Szlak: ${dailySelections.trail.name}</p>
+    <p>Obszar: ${selection.hike.area}</p>
+    <p>Data: ${selection.date}</p>
+    <p>Kategoria szlaku: ${selection.category.name}</p>
+    <p>Szlak: ${selection.trail.name}</p>
     <hr/>
 </c:forEach>
 </body>

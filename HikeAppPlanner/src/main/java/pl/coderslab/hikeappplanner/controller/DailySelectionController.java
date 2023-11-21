@@ -8,6 +8,7 @@ import pl.coderslab.hikeappplanner.repository.DailySelectionRepository;
 import pl.coderslab.hikeappplanner.repository.HikeRepository;
 import pl.coderslab.hikeappplanner.repository.TrailCategoryRepository;
 import pl.coderslab.hikeappplanner.repository.TrailRepository;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,23 +39,23 @@ public class DailySelectionController {
         List<DailySelection> dailySelections = selectionRepository.findAllByHikeId(hikeId);
 
         // pobranie dostępnych kategorii dla wybranej area
-        List<TrailCategory> categories = categoryRepository.findAllByAreasContains(dailySelections.get(0).getHike().getArea());
+        List<TrailCategory> categories = categoryRepository.findAllByAreas_Id(dailySelections.get(0).getHike().getArea().getId());
 
         // przekazanie danych do modelu
-        model.addAttribute("dailySelection", new DailySelection());
         model.addAttribute("dailySelections", dailySelections);
         model.addAttribute("categories", categories);
         model.addAttribute("hikeId", hikeId);
-        return "dailySelects/selectCategoryForm";
+        return "/dailySelects/selectCategoryForm";
     }
 
     @PostMapping("/category")
-    public String saveSelectCategory(@RequestParam("hikeId") Long hikeId, @ModelAttribute("dailySelections") List<DailySelection> dailySelections) {
+    public String saveSelectCategory(@RequestParam("hikeId") Long hikeId,
+                                     @ModelAttribute DailySelection dailySelection) {
 
         // zapisanie wyborów kategorii dla poszczególnych dni
-        selectionRepository.saveAll(dailySelections);
+        selectionRepository.save(dailySelection);
 
-        // przekierowanie na widok wyboru szlaków
+        // przekierowanie na widok wyboru kategorii
         return "redirect:/select/trail?hikeId=" + hikeId;
     }
 
@@ -70,11 +71,10 @@ public class DailySelectionController {
                 .collect(Collectors.toList()), dailySelections.get(0).getHike().getArea());
 
         // przekazanie danych do modelu
-        model.addAttribute("dailySelection", new DailySelection());
         model.addAttribute("dailySelections", dailySelections);
         model.addAttribute("trails", trails);
         model.addAttribute("hikeId", hikeId);
-        return "dailySelects/selectTrailForm";
+        return "/selectTrailForm";
     }
 
     @PostMapping("/trail")

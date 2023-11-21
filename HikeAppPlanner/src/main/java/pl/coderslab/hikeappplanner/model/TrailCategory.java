@@ -18,8 +18,8 @@ public class TrailCategory {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "areas_trail_categories",
-            joinColumns = {@JoinColumn(name = "area_id")},
-            inverseJoinColumns = {@JoinColumn(name = "trail_category_id")})
+            joinColumns = {@JoinColumn(name = "trail_category_id")},
+            inverseJoinColumns = {@JoinColumn(name = "area_id")})
     private List<Area> areas = new ArrayList<>();
 
     public TrailCategory() {

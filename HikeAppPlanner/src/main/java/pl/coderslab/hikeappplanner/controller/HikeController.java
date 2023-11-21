@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.coderslab.hikeappplanner.model.Area;
 import pl.coderslab.hikeappplanner.model.DailySelection;
 import pl.coderslab.hikeappplanner.model.Hike;
@@ -47,13 +46,13 @@ public class HikeController {
         model.addAttribute("areas", areas());
 
         // przekierowanie na widok tworzenia wyprawy
-        return "/hikes/createHikeForm";
+        return "hikes/createHikeForm";
     }
 
     @PostMapping("/create")
     public String createHike(@Valid Hike hike, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return "/hikes/createHikeForm";
+            return "hikes/createHikeForm";
         }
 
         // zapisanie wyprawy
@@ -64,16 +63,16 @@ public class HikeController {
         LocalDate endDate = savedHike.getEndDate();
 
         // generowanie pustych wpisów dla każdego dnia wyprawy
-        List<DailySelection> selections = new ArrayList<>();
+        List<DailySelection> dailySelections = new ArrayList<>();
         LocalDate currentDate = startDate;
         while (!currentDate.isAfter(endDate)) {
             DailySelection dailySelection = new DailySelection(savedHike, null, null, currentDate);
-            selections.add(dailySelection);
+            dailySelections.add(dailySelection);
             currentDate = currentDate.plusDays(1);
         }
 
         // zapisanie pustych wpisów do bazy danych
-        selectionRepository.saveAll(selections);
+        selectionRepository.saveAll(dailySelections);
 
         // przekierowanie na widok wyboru kategorii szlaków z przekazaniem parametru
         return "redirect:/select/category?hikeId=" + savedHike.getId();

@@ -63,7 +63,7 @@
 </head>
 <body>
 <h1>Wybierz szlak</h1>
-<form:form method="post" modelAttribute="dailySelection" action="/select/trail">
+<form:form method="post" modelAttribute="dailySelections" action="/select/trail">
     <c:forEach items="${dailySelections}" var="selection">
         <label for="trail-${selection.date}">Wybierz szlak dla ${selection.date}</label>
         <form:select path="trail" id="trail-${selection.date}">

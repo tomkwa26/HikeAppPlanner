@@ -6,7 +6,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
@@ -63,17 +62,24 @@
     </style>
 </head>
 <body>
-<h1>Wybierz kategorię szlaku</h1>
-<form:form method="post" modelAttribute="dailySelection" action="/select/category">
-    <c:forEach items="${dailySelections}" var="selection">
-        <label for="category-${selection.date}">Wybierz kategorię szlaku dla ${selection.date}:</label>
-        <form:select path="category" id="category-${selection.date}">
-            <form:option value="" label="Wybierz kategorię szlaku"/>
-            <form:options items="${categories}" itemLabel="name" itemValue="id"/>
-        </form:select>
+<h1>Wybierz kategorie szlaków</h1>
+<form action="/select/category" method="post">
+    <c:forEach items="${dailySelections}" var="dailySelection">
+        <fieldset>
+            <legend>Dzień ${dailySelection.date}</legend>
+            <input type="hidden" name="dailySelectionId" value="${dailySelection.id}" />
+            <input type="hidden" name="hikeId" value="${hikeId}" />
+            <label for="categoryId">Wybierz kategorię:</label>
+            <select id="categoryId" name="categoryId">
+                <!-- Pobranie dostępnych kategorii dla danego dnia wyprawy -->
+                <c:forEach items="${categories}" var="category">
+                    <option value="${category.id}">${category.name}</option>
+                </c:forEach>
+            </select>
+        </fieldset>
+        <br />
     </c:forEach>
-    <input type="hidden" name="hikeId" value="${hikeId}"/>
-    <button type="submit">Zapisz wybór kategorii</button>
-</form:form>
+    <button type="submit">Zapisz</button>
+</form>
 </body>
 </html>
