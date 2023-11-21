@@ -63,14 +63,14 @@
 </head>
 <body>
 <h1>Wybierz kategorie szlaków</h1>
-<form action="/select/category" method="post">
-    <c:forEach items="${dailySelections}" var="dailySelection">
+<c:forEach items="${dailySelections}" var="dailySelection">
+    <form action="/select/category" method="post">
         <fieldset>
             <legend>Dzień ${dailySelection.date}</legend>
             <input type="hidden" name="dailySelectionId" value="${dailySelection.id}" />
             <input type="hidden" name="hikeId" value="${hikeId}" />
-            <label for="categoryId">Wybierz kategorię:</label>
-            <select id="categoryId" name="categoryId">
+            <label for="categoryId_${dailySelection.id}">Wybierz kategorię:</label>
+            <select id="categoryId_${dailySelection.id}" name="categoryId">
                 <!-- Pobranie dostępnych kategorii dla danego dnia wyprawy -->
                 <c:forEach items="${categories}" var="category">
                     <option value="${category.id}">${category.name}</option>
@@ -78,8 +78,8 @@
             </select>
         </fieldset>
         <br />
-    </c:forEach>
-    <button type="submit">Zapisz</button>
-</form>
+        <button type="submit">Zapisz</button>
+    </form>
+</c:forEach>
 </body>
 </html>
