@@ -45,7 +45,7 @@ public class DailySelectionController {
         model.addAttribute("dailySelections", dailySelections);
         model.addAttribute("categories", categories);
         model.addAttribute("hikeId", hikeId);
-        return "/dailySelects/selectCategoryForm";
+        return "dailySelects/selectCategoryForm";
     }
 
     @PostMapping("/category")
@@ -74,7 +74,7 @@ public class DailySelectionController {
         model.addAttribute("dailySelections", dailySelections);
         model.addAttribute("trails", trails);
         model.addAttribute("hikeId", hikeId);
-        return "/selectTrailForm";
+        return "dailySelects/selectTrailForm";
     }
 
     @PostMapping("/trail")
