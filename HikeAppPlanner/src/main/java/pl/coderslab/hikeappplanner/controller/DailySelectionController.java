@@ -8,8 +8,11 @@ import pl.coderslab.hikeappplanner.repository.DailySelectionRepository;
 import pl.coderslab.hikeappplanner.repository.HikeRepository;
 import pl.coderslab.hikeappplanner.repository.TrailCategoryRepository;
 import pl.coderslab.hikeappplanner.repository.TrailRepository;
+import pl.coderslab.hikeappplanner.service.DailySelectionService;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -18,15 +21,17 @@ public class DailySelectionController {
 
     private final DailySelectionRepository selectionRepository;
 
+    private final DailySelectionService dailySelectionService;
+
     private final HikeRepository hikeRepository;
 
     private final TrailCategoryRepository categoryRepository;
 
     private final TrailRepository trailRepository;
 
-    public DailySelectionController(DailySelectionRepository selectionRepository, HikeRepository hikeRepository,
-                                    TrailCategoryRepository categoryRepository, TrailRepository trailRepository) {
+    public DailySelectionController(DailySelectionRepository selectionRepository, DailySelectionService dailySelectionService, HikeRepository hikeRepository, TrailCategoryRepository categoryRepository, TrailRepository trailRepository) {
         this.selectionRepository = selectionRepository;
+        this.dailySelectionService = dailySelectionService;
         this.hikeRepository = hikeRepository;
         this.categoryRepository = categoryRepository;
         this.trailRepository = trailRepository;
@@ -50,13 +55,21 @@ public class DailySelectionController {
 
     @PostMapping("/category")
     public String saveSelectCategory(@RequestParam("hikeId") Long hikeId,
-                                     @ModelAttribute DailySelection dailySelection) {
+                                     @RequestParam("dailySelectionId") Long dailySelectionId,
+                                     @RequestParam("categoryId") Long categoryId) {
 
-        // zapisanie wyborów kategorii dla poszczególnych dni
-        selectionRepository.save(dailySelection);
+        // zapis wybóru kategorii dla danego dnia wyprawy
+        dailySelectionService.saveCategoryForDailySelection(dailySelectionId, categoryId);
 
-        // przekierowanie na widok wyboru kategorii
-        return "redirect:/select/trail?hikeId=" + hikeId;
+        // sprawdzenie, czy jest to ostatni dzień wyprawy
+        if (dailySelectionService.isLastDayOfHike(hikeId, dailySelectionId)) {
+
+            // przekierowanie do akcji wyboru szlaku
+            return "redirect:/select/trail?hikeId=" + hikeId;
+        }
+
+        // powrót na widok wyboru kategorii
+        return "redirect:/select/category?hikeId=" + hikeId;
     }
 
     @GetMapping("/trail")
@@ -65,10 +78,8 @@ public class DailySelectionController {
         // pobranie pustych wpisów związanych z daną wyprawą
         List<DailySelection> dailySelections = selectionRepository.findAllByHikeId(hikeId);
 
-        // pobieranie dostępnych szlaków dla wybranej kategorii szlaków
-        List<Trail> trails = trailRepository.findAllByCategoryInAndArea(dailySelections.stream()
-                .map(DailySelection::getCategory)
-                .collect(Collectors.toList()), dailySelections.get(0).getHike().getArea());
+        // pobieranie dostępnych szlaków dla wybranej kategorii szlaków i wybranego obszaru
+        List<Trail> trails = trailRepository.findAllByArea_IdAndCategory_Id(dailySelections.get(0).getHike().getArea().getId(), dailySelections.get(0).getCategory().getId());
 
         // przekazanie danych do modelu
         model.addAttribute("dailySelections", dailySelections);
@@ -78,13 +89,22 @@ public class DailySelectionController {
     }
 
     @PostMapping("/trail")
-    public String saveSelectTrail(@RequestParam("hikeId") Long hikeId, @ModelAttribute("dailySelections") List<DailySelection> dailySelections) {
+    public String saveSelectTrail(@RequestParam("hikeId") Long hikeId,
+                                  @RequestParam("dailySelectionId") Long dailySelectionId,
+                                  @RequestParam("trailId") Long trailId) {
 
-        // zapisanie wyborów kategorii dla poszczególnych dni
-        selectionRepository.saveAll(dailySelections);
+        // zapis wybóru szlaku dla danego dnia wyprawy
+        dailySelectionService.saveTrailForDailySelection(dailySelectionId, trailId);
 
-        // przekierowanie na widok podsumowania
-        return "redirect:/select/summary?hikeId=" + hikeId;
+        // sprawdzenie, czy jest to ostatni dzień wyprawy
+        if (dailySelectionService.isLastDayOfHike(hikeId, dailySelectionId)) {
+
+            // przekierowanie do akcji wyboru szlaku
+            return "redirect:/summary?hikeId=" + hikeId;
+        }
+
+        // powrót na widok wyboru kategorii
+        return "redirect:/select/trail?hikeId=" + hikeId;
     }
 
     @GetMapping("/summary")
