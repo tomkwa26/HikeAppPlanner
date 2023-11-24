@@ -3,9 +3,7 @@ package pl.coderslab.hikeappplanner.model;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 @Entity
@@ -30,6 +28,7 @@ public class Hike {
 
     @ManyToOne
     @JoinColumn(name = "area_id")
+    @NotNull(message = "pole obszar nie może byc puste")
     private Area area;
 
     public Hike() {

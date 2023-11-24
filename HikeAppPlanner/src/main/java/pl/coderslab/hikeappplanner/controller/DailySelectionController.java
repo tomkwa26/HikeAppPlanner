@@ -10,9 +10,7 @@ import pl.coderslab.hikeappplanner.repository.TrailCategoryRepository;
 import pl.coderslab.hikeappplanner.repository.TrailRepository;
 import pl.coderslab.hikeappplanner.service.DailySelectionService;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -43,8 +41,16 @@ public class DailySelectionController {
         // pobranie pustych wpisów związanych z daną wyprawą
         List<DailySelection> dailySelections = selectionRepository.findAllByHikeId(hikeId);
 
-        // pobranie dostępnych kategorii dla wybranej area
-        List<TrailCategory> categories = categoryRepository.findAllByAreas_Id(dailySelections.get(0).getHike().getArea().getId());
+        // utworzenie listy kategorii szlaków dla dni wycieczki z dodaniem całej listy do kategorii
+        List<List<TrailCategory>> categories = new ArrayList<>();
+
+        for (DailySelection dailySelection : dailySelections) {
+            Long areaId = dailySelection.getHike().getArea().getId();
+
+            // pobieranie dostępnych kategorii szlaków dla wybranego obszaru
+            List<TrailCategory> trailCategoriesList = categoryRepository.findAllByAreas_Id(areaId);
+            categories.add(trailCategoriesList);
+        }
 
         // przekazanie danych do modelu
         model.addAttribute("dailySelections", dailySelections);
@@ -78,12 +84,27 @@ public class DailySelectionController {
         // pobranie pustych wpisów związanych z daną wyprawą
         List<DailySelection> dailySelections = selectionRepository.findAllByHikeId(hikeId);
 
-        // pobieranie dostępnych szlaków dla wybranej kategorii szlaków i wybranego obszaru
-        List<Trail> trails = trailRepository.findAllByArea_IdAndCategory_Id(dailySelections.get(0).getHike().getArea().getId(), dailySelections.get(0).getCategory().getId());
+        // utworzenie mapy przechowującej listę szlaków dla każdego dnia wycieczki
+        Map<Long, List<Trail>> trails = new HashMap<>();
+        Map<Long, String> errorMessages = new HashMap<>();
+
+        for (DailySelection dailySelection : dailySelections) {
+            Long areaId = dailySelection.getHike().getArea().getId();
+            Long categoryId = dailySelection.getCategory().getId();
+
+            // pobieranie dostępnych szlaków dla wybranej kategorii szlaków i wybranego obszaru
+            List<Trail> trailList = trailRepository.findAllByArea_IdAndCategory_Id(areaId, categoryId);
+
+            if (trailList.isEmpty()) {
+                errorMessages.put(dailySelection.getId(), "Nie odnaleziono szlaków dla wybranej kategorii.");
+            }
+                trails.put(dailySelection.getId(), trailList);
+        }
 
         // przekazanie danych do modelu
         model.addAttribute("dailySelections", dailySelections);
         model.addAttribute("trails", trails);
+        model.addAttribute("errorMessages", errorMessages);
         model.addAttribute("hikeId", hikeId);
         return "dailySelects/selectTrailForm";
     }

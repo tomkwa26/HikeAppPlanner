@@ -63,7 +63,7 @@
 </head>
 <body>
 <h1>Wybierz kategorie szlaków</h1>
-<c:forEach items="${dailySelections}" var="dailySelection">
+<c:forEach items="${dailySelections}" var="dailySelection" varStatus="loop">
     <form action="/select/category" method="post">
         <fieldset>
             <legend>Dzień ${dailySelection.date}</legend>
@@ -71,8 +71,9 @@
             <input type="hidden" name="hikeId" value="${hikeId}" />
             <label for="categoryId_${dailySelection.id}">Wybierz kategorię:</label>
             <select id="categoryId_${dailySelection.id}" name="categoryId">
+                <option value="" selected>Wybierz kategorię:</option>
                 <!-- Pobranie dostępnych kategorii dla danego dnia wyprawy -->
-                <c:forEach items="${categories}" var="category">
+                <c:forEach items="${categories[loop.index]}" var="category">
                     <option value="${category.id}">${category.name}</option>
                 </c:forEach>
             </select>

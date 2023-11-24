@@ -71,11 +71,23 @@
             <input type="hidden" name="categoryId" value="${dailySelection.category.id}" />
             <label for="trailId_${dailySelection.id}">Wybierz szlak:</label>
             <select id="trailId_${dailySelection.id}" name="trailId">
-                <!-- Pobranie dostępnych kategorii dla danego dnia wyprawy -->
-                <c:forEach items="${trails}" var="trail">
-                    <option value="${trail.id}">${trail.name}</option>
-                </c:forEach>
+                <option value="" selected>Wybierz szlak:</option>
+                <c:choose>
+                    <c:when test="${empty trails[dailySelection.id]}">
+                        <option value="Brak dostępnych szlaków"/>
+                    </c:when>
+                    <c:otherwise>
+                        <!-- Pobranie dostępnych szlaków dla danego dnia wyprawy -->
+                        <c:forEach items="${trails[dailySelection.id]}" var="trail">
+                            <option value="${trail.id}">${trail.name}</option>
+                        </c:forEach>
+                    </c:otherwise>
+                </c:choose>
             </select>
+            <c:if test="${errorMessages[dailySelection.id] != null}">
+                <p style="color: red;">${errorMessages[dailySelection.id]}</p>
+                <a href="/select/category?hikeId=${hikeId}">Wróć do wyboru kategorii szlaków</a>
+            </c:if>
         </fieldset>
         <br />
         <button type="submit">Zapisz</button>
