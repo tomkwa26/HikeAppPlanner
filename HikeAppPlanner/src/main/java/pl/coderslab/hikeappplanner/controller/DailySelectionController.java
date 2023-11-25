@@ -121,7 +121,7 @@ public class DailySelectionController {
         if (dailySelectionService.isLastDayOfHike(hikeId, dailySelectionId)) {
 
             // przekierowanie do akcji wyboru szlaku
-            return "redirect:/summary?hikeId=" + hikeId;
+            return "redirect:/select/summary?hikeId=" + hikeId;
         }
 
         // powrót na widok wyboru kategorii
@@ -131,12 +131,10 @@ public class DailySelectionController {
     @GetMapping("/summary")
     public String showSummary(@RequestParam("hikeId") Long hikeId, Model model) {
 
-        // pobranie wyprawy i powiązanych z nią wyborów
-        Hike hike = hikeRepository.findById(hikeId).orElseThrow();
+        // pobranie wszystkich wyborów użytkownika dla każdego dnia
         List<DailySelection> dailySelections = selectionRepository.findAllByHikeId(hikeId);
 
         // przekazanie danych do modelu
-        model.addAttribute("hike", hike);
         model.addAttribute("dailySelections", dailySelections);
         return "dailySelects/summary";
     }

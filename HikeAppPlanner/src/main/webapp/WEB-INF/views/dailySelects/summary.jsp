@@ -21,59 +21,66 @@
             color: #333;
         }
 
-        form {
+        table {
             background-color: #F2F2F2;
+            border-collapse: collapse;
             border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 20px;
-            margin: 0 auto;
             width: 80%;
+            margin: 0 auto;
         }
 
-        label {
-            display: block;
-            margin-top: 10px;
-        }
-
-        input[type="text"],
-        select,
-        textarea {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
+        table td, th {
             border: 1px solid #ccc;
-            border-radius: 3px;
-            background-color: #D9D9D9;
+            padding: 5px;
+            text-align: center;
         }
 
-        button {
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        a {
             background-color: #007BFF;
             color: #fff;
-            padding: 10px 20px;
+            padding: 5px 10px;
             border: none;
             border-radius: 3px;
-            cursor: pointer;
+            text-decoration: none;
+            margin: 2px;
+            display: inline-block;
         }
 
-        button:hover {
-            background-color: #0056b3;
+        a.new-hike {
+            background-color: #007BFF;
         }
     </style>
 </head>
 <body>
 <h1>Podsumowanie wyprawy</h1>
-
-<p>Nazwa wyprawy: ${hike.name}</p>
-<p>Data początkowa: ${hike.startDate}</p>
-<p>Data końcowa: ${hike.endDate}</p>
-
-<h2>Wybrany obszar, kategorie i szlaki:</h2>
-<c:forEach items="${dailySelections}" var="selection">
-    <p>Obszar: ${selection.hike.area}</p>
-    <p>Data: ${selection.date}</p>
-    <p>Kategoria szlaku: ${selection.category.name}</p>
-    <p>Szlak: ${selection.trail.name}</p>
-    <hr/>
-</c:forEach>
+<table>
+    <thead>
+    <tr>
+        <th>Data</th>
+        <th>Obszar</th>
+        <th>Kategoria szlaku</th>
+        <th>Szlak</th>
+    </tr>
+    </thead>
+    <tbody>
+    <c:forEach items="${dailySelections}" var="dailySelection">
+        <tr>
+            <td>${dailySelection.date}</td>
+            <td>${dailySelection.hike.area.name}</td>
+            <td>${dailySelection.category.name}</td>
+            <td>${dailySelection.trail.name}</td>
+        </tr>
+    </c:forEach>
+    </tbody>
+</table>
+<div class="button-container">
+    <a href="/hike/create" class="new-hike">Utwórz nowy wyjazd</a>
+</div>
 </body>
 </html>
