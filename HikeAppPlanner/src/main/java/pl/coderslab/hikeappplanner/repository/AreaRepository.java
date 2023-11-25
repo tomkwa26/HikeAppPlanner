@@ -9,5 +9,4 @@ public interface AreaRepository extends JpaRepository<Area, Long> {
 
     @Override
     List<Area> findAll();
-
 }
