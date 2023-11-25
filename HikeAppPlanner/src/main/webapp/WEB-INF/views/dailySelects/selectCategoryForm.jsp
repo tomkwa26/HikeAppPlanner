@@ -74,7 +74,7 @@
                 <option value="" selected>Wybierz kategorię:</option>
                 <!-- Pobranie dostępnych kategorii dla danego dnia wyprawy -->
                 <c:forEach items="${categories[loop.index]}" var="category">
-                    <option value="${category.id}">${category.name}</option>
+                    <option value="${category.id}" title="${category.description}">${category.name}</option>
                 </c:forEach>
             </select>
         </fieldset>
@@ -82,5 +82,24 @@
         <button type="submit">Zapisz</button>
     </form>
 </c:forEach>
+<script>
+    // Funkcja dla wyświetlania tooltipa po najechaniu kursorem na opcję kategorii
+    const categorySelects = document.querySelectorAll('.category-select');
+    categorySelects.forEach(select => {
+        select.addEventListener('mouseover', function(event) {
+            const target = event.target;
+            if (target.tagName === 'OPTION') {
+                const description = target.getAttribute('title');
+                if (description) {
+                    target.setAttribute('title', ''); // resetowanie atrybutu title
+                    alert(description);
+                    setTimeout(() => {
+                        target.setAttribute('title', description); // przywrócenie poprzedniego opisu
+                    }, 3000); // czas wyświetlania tooltipa
+                }
+            }
+        });
+    });
+</script>
 </body>
 </html>

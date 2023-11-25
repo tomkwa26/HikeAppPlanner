@@ -79,7 +79,7 @@
                     <c:otherwise>
                         <!-- Pobranie dostępnych szlaków dla danego dnia wyprawy -->
                         <c:forEach items="${trails[dailySelection.id]}" var="trail">
-                            <option value="${trail.id}">${trail.name}</option>
+                            <option value="${trail.id}" title="${trail.description}">${trail.name}</option>
                         </c:forEach>
                     </c:otherwise>
                 </c:choose>
@@ -93,5 +93,24 @@
         <button type="submit">Zapisz</button>
     </form>
 </c:forEach>
+<script>
+    // Funkcja dla wyświetlania tooltipa po najechaniu kursorem na opcję szlaku
+    const trailSelects = document.querySelectorAll('.trail-select');
+    trailSelects.forEach(select => {
+        select.addEventListener('mouseover', function(event) {
+            const target = event.target;
+            if (target.tagName === 'OPTION') {
+                const description = target.getAttribute('title');
+                if (description) {
+                    target.setAttribute('title', ''); // resetowanie atrybutu title
+                    alert(description);
+                    setTimeout(() => {
+                        target.setAttribute('title', description); // przywrócenie poprzedniego opisu
+                    }, 3000); // czas wyświetlania tooltipa
+                }
+            }
+        });
+    });
+</script>
 </body>
 </html>

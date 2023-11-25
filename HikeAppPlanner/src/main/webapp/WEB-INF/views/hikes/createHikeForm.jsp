@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>Utwórz wyjazd</title>
@@ -81,19 +82,38 @@
     <form:errors path="endDate" cssClass="error"/>
     <hr/>
     <form:label path="area">Miejsce</form:label>
-    <form:select path="area">
+    <form:select path="area" id="areaSelect">
         <form:option value="" label="Wybierz miejsce"/>
-        <form:options items="${areas}" itemLabel="name" itemValue="id"/>
+        <c:forEach items="${areas}" var="area">
+            <form:option value="${area.id}" label="${area.name}" title="${area.description}"/>
+        </c:forEach>
     </form:select>
     <form:errors path="area" cssClass="error"/>
     <hr/>
     <form:button>Utwórz wyjazd</form:button>
 </form:form>
 <script>
+
+    // funkcja blokująca możliwość wyboru przeszłej daty
     function setMinEndDate() {
         const startDate = document.getElementById('startDate').value;
         document.getElementById('endDate').min = startDate;
     }
+    // Funkcja dla wyświetlania tooltipa po najechaniu kursorem na opcję obszaru
+    const areaSelect = document.getElementById('areaSelect');
+    areaSelect.addEventListener('mouseover', function(event) {
+        const target = event.target;
+        if (target.tagName === 'OPTION') {
+            const description = target.getAttribute('title');
+            if (description) {
+                target.setAttribute('title', ''); // resetowanie atrybutu title
+                alert(description);
+                setTimeout(() => {
+                    target.setAttribute('title', description); // przywrócenie poprzedniego opisu
+                }, 3000); // czas wyświetlania tooltipa
+            }
+        }
+    });
 </script>
 </body>
 </html>

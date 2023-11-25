@@ -67,7 +67,6 @@
         <th>Kategoria szlaku</th>
         <th>Szlak</th>
         <th>Kolor szlaku</th>
-        <th>Opis szlaku</th>
         <th>Dystans</th>
     </tr>
     </thead>
@@ -79,7 +78,6 @@
             <td>${dailySelection.category.name}</td>
             <td>${dailySelection.trail.name}</td>
             <td>${dailySelection.trail.color}</td>
-            <td>${dailySelection.trail.description}</td>
             <td>${dailySelection.trail.length} km</td>
         </tr>
     </c:forEach>
