@@ -1,4 +1,4 @@
-<%--
+<%@ page import="java.time.LocalDate" %><%--
   Created by IntelliJ IDEA.
   User: tomasz
   Date: 07.11.2023
@@ -73,11 +73,11 @@
     <form:errors path="name" cssClass="error"/>
     <hr/>
     <label for="startDate">Data rozpoczęcia wyjazdu</label>
-    <form:input path="startDate" type="date"/>
+    <form:input path="startDate" type="date" id="startDate" min="<%= LocalDate.now() %>" onchange="setMinEndDate()"/>
     <form:errors path="startDate" cssClass="error"/>
     <hr/>
     <label for="endDate">Data zakończenia wyjazdu</label>
-    <form:input path="endDate" type="date"/>
+    <form:input path="endDate" type="date" id="endDate" onchange="setMinEndDate()"/>
     <form:errors path="endDate" cssClass="error"/>
     <hr/>
     <form:label path="area">Miejsce</form:label>
@@ -89,5 +89,11 @@
     <hr/>
     <form:button>Utwórz wyjazd</form:button>
 </form:form>
+<script>
+    function setMinEndDate() {
+        const startDate = document.getElementById('startDate').value;
+        document.getElementById('endDate').min = startDate;
+    }
+</script>
 </body>
 </html>

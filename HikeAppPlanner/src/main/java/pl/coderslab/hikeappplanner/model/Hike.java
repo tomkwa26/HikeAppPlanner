@@ -14,15 +14,13 @@ public class Hike {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "pole nie może być puste")
+    @NotBlank(message = "pole nazwa nie może być puste")
     @Size(max = 50, message = "pole może mieć {max} znaków")
     private String name;
 
-    @FutureOrPresent(message = "data niepoprawna, wybierz przyszłą datę")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
 
-    @FutureOrPresent(message = "data niepoprawna, wybierz przyszłą datę")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
 
