@@ -1,5 +1,7 @@
 package pl.coderslab.hikeappplanner.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -9,9 +11,10 @@ import pl.coderslab.hikeappplanner.repository.HikeRepository;
 import pl.coderslab.hikeappplanner.repository.TrailCategoryRepository;
 import pl.coderslab.hikeappplanner.repository.TrailRepository;
 import pl.coderslab.hikeappplanner.service.DailySelectionService;
+import pl.coderslab.hikeappplanner.service.WeatherAPIService;
 
+import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/select")
@@ -27,12 +30,17 @@ public class DailySelectionController {
 
     private final TrailRepository trailRepository;
 
-    public DailySelectionController(DailySelectionRepository selectionRepository, DailySelectionService dailySelectionService, HikeRepository hikeRepository, TrailCategoryRepository categoryRepository, TrailRepository trailRepository) {
+    private final WeatherAPIService weatherAPIService;
+
+    public DailySelectionController(DailySelectionRepository selectionRepository, DailySelectionService dailySelectionService,
+                                    HikeRepository hikeRepository, TrailCategoryRepository categoryRepository,
+                                    TrailRepository trailRepository, WeatherAPIService weatherAPIService) {
         this.selectionRepository = selectionRepository;
         this.dailySelectionService = dailySelectionService;
         this.hikeRepository = hikeRepository;
         this.categoryRepository = categoryRepository;
         this.trailRepository = trailRepository;
+        this.weatherAPIService = weatherAPIService;
     }
 
     @GetMapping("/category")
@@ -134,8 +142,24 @@ public class DailySelectionController {
         // pobranie wszystkich wyborów użytkownika dla każdego dnia
         List<DailySelection> dailySelections = selectionRepository.findAllByHikeId(hikeId);
 
+        // lista przechowująca dane pogodowe dla każdego dnia
+        List<WeatherDto> weatherDtoList = new ArrayList<>();
+
+        for (DailySelection dailySelection : dailySelections) {
+
+            // pobieranie danych potrzebnych do wywołania WeatherAPIService
+            double lat = dailySelection.getTrail().getStartLat();
+            double lon = dailySelection.getTrail().getStartLon();
+            LocalDate date = dailySelection.getDate();
+
+            // pobranie danych pogodowych za pomocą WeatherAPIService
+            List<WeatherDto> weatherDtos = weatherAPIService.getWeather(lat, lon, date);
+            weatherDtoList.addAll(weatherDtos);
+        }
+
         // przekazanie danych do modelu
         model.addAttribute("dailySelections", dailySelections);
+        model.addAttribute("weatherDtoList", weatherDtoList);
         return "dailySelects/summary";
     }
 }

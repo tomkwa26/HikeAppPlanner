@@ -68,10 +68,11 @@
         <th>Szlak</th>
         <th>Kolor szlaku</th>
         <th>Dystans</th>
+        <th>Warunki pogodowe</th>
     </tr>
     </thead>
     <tbody>
-    <c:forEach items="${dailySelections}" var="dailySelection">
+    <c:forEach items="${dailySelections}" var="dailySelection" varStatus="loop">
         <tr>
             <td>${dailySelection.date}</td>
             <td>${dailySelection.hike.area.name}</td>
@@ -79,6 +80,20 @@
             <td>${dailySelection.trail.name}</td>
             <td>${dailySelection.trail.color}</td>
             <td>${dailySelection.trail.length} km</td>
+            <td>
+                <c:choose>
+                    <c:when test="${loop.index < weatherDtoList.size()}">
+                        <span>Temperatura: ${weatherDtoList[loop.index].temperature}</span><br>
+                        <span>Prędkość wiatru: ${weatherDtoList[loop.index].windSpeed}</span><br>
+                        <span>Wilgotność: ${weatherDtoList[loop.index].humidity}</span><br>
+                        <span>Wschód Słońca: ${weatherDtoList[loop.index].sunrise}</span><br>
+                        <span>Zachód Słońca: ${weatherDtoList[loop.index].sunset}</span><br>
+                    </c:when>
+                    <c:otherwise>
+                        <span>Brak danych pogodowych</span>
+                    </c:otherwise>
+                </c:choose>
+            </td>
         </tr>
     </c:forEach>
     </tbody>
