@@ -66,9 +66,9 @@
     <form action="/select/trail" method="post">
         <fieldset>
             <legend>Dzień ${dailySelection.date}</legend>
-            <input type="hidden" name="dailySelectionId" value="${dailySelection.id}" />
-            <input type="hidden" name="hikeId" value="${hikeId}" />
-            <input type="hidden" name="categoryId" value="${dailySelection.category.id}" />
+            <input type="hidden" name="dailySelectionId" value="${dailySelection.id}"/>
+            <input type="hidden" name="hikeId" value="${hikeId}"/>
+            <input type="hidden" name="categoryId" value="${dailySelection.category.id}"/>
             <label for="trailId_${dailySelection.id}">Wybierz szlak:</label>
             <select id="trailId_${dailySelection.id}" name="trailId">
                 <option value="" selected>Wybierz szlak:</option>
@@ -89,7 +89,7 @@
                 <a href="/select/category?hikeId=${hikeId}">Wróć do wyboru kategorii szlaków</a>
             </c:if>
         </fieldset>
-        <br />
+        <br/>
         <button type="submit">Zapisz</button>
     </form>
 </c:forEach>
@@ -97,7 +97,7 @@
     // Funkcja dla wyświetlania tooltipa po najechaniu kursorem na opcję szlaku
     const trailSelects = document.querySelectorAll('.trail-select');
     trailSelects.forEach(select => {
-        select.addEventListener('mouseover', function(event) {
+        select.addEventListener('mouseover', function (event) {
             const target = event.target;
             if (target.tagName === 'OPTION') {
                 const description = target.getAttribute('title');

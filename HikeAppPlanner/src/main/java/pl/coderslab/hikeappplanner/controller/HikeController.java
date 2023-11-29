@@ -55,12 +55,21 @@ public class HikeController {
             return "hikes/createHikeForm";
         }
 
+        // uzyskanie wybranych dat
+        LocalDate startDate = hike.getStartDate();
+        LocalDate endDate = hike.getEndDate();
+
+        // sprawdzenie, czy wybrana data znajduje się w poprawnym przedziale (ograniczenie API)
+        LocalDate minDate = LocalDate.now().plusDays(14);
+        LocalDate maxDate = LocalDate.now().plusDays(300);
+
+        if (startDate.isBefore(minDate) || endDate.isAfter(maxDate)) {
+            model.addAttribute("invalidDateMessage", "Wybierz datę między " + minDate + " a " + maxDate);
+            return "hikes/createHikeForm";
+        }
+
         // zapisanie wyprawy
         Hike savedHike = hikeRepository.save(hike);
-
-        // uzyskanie wybranych dat
-        LocalDate startDate = savedHike.getStartDate();
-        LocalDate endDate = savedHike.getEndDate();
 
         // generowanie pustych wpisów dla każdego dnia wyprawy
         List<DailySelection> dailySelections = new ArrayList<>();

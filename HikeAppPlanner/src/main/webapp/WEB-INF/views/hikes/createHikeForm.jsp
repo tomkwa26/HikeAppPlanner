@@ -16,6 +16,7 @@
             color: crimson;
             font-weight: normal;
         }
+
         body {
             background-color: #E6E6E6;
             font-family: Arial, sans-serif;
@@ -67,6 +68,9 @@
 </head>
 <body>
 <h1>Utwórz nowy wyjazd</h1>
+<c:if test="${not empty invalidDateMessage}">
+    <p style="color: red;">${invalidDateMessage}</p>
+</c:if>
 <form:form method="post" modelAttribute="hike" action="/hike/create">
     <form:hidden path="id"/>
     <form:label path="name">Nazwa</form:label>
@@ -99,9 +103,10 @@
         const startDate = document.getElementById('startDate').value;
         document.getElementById('endDate').min = startDate;
     }
+
     // Funkcja dla wyświetlania tooltipa po najechaniu kursorem na opcję obszaru
     const areaSelect = document.getElementById('areaSelect');
-    areaSelect.addEventListener('mouseover', function(event) {
+    areaSelect.addEventListener('mouseover', function (event) {
         const target = event.target;
         if (target.tagName === 'OPTION') {
             const description = target.getAttribute('title');

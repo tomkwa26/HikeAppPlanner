@@ -7,4 +7,5 @@ import pl.coderslab.hikeappplanner.model.Hike;
 import java.util.List;
 
 public interface HikeRepository extends JpaRepository<Hike, Long> {
+
 }

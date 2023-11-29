@@ -11,16 +11,12 @@ public class WeatherForecastDayDto {
     private WeatherDayDto day;
     @JsonProperty("astro")
     private WeatherAstroDto astro;
+
     public WeatherDayDto getDay() {
         return day;
     }
-    public void setDay(WeatherDayDto day) {
-        this.day = day;
-    }
+
     public WeatherAstroDto getAstro() {
         return astro;
-    }
-    public void setAstro(WeatherAstroDto astro) {
-        this.astro = astro;
     }
 }

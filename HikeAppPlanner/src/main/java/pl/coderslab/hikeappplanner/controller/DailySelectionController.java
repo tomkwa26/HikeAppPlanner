@@ -106,7 +106,7 @@ public class DailySelectionController {
             if (trailList.isEmpty()) {
                 errorMessages.put(dailySelection.getId(), "Nie odnaleziono szlaków dla wybranej kategorii.");
             }
-                trails.put(dailySelection.getId(), trailList);
+            trails.put(dailySelection.getId(), trailList);
         }
 
         // przekazanie danych do modelu

@@ -14,8 +14,4 @@ public class WeatherForecastDto {
     public List<WeatherForecastDayDto> getForecastday() {
         return forecastday;
     }
-
-    public void setForecastday(List<WeatherForecastDayDto> forecastday) {
-        this.forecastday = forecastday;
-    }
 }

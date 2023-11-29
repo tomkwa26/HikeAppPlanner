@@ -12,4 +12,5 @@ import java.util.List;
 public interface TrailRepository extends JpaRepository<Trail, Long> {
 
     List<Trail> findAllByArea_IdAndCategory_Id(Long areaId, Long categoryId);
+
 }

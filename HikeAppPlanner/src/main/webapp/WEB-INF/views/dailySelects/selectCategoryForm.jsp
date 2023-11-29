@@ -67,8 +67,8 @@
     <form action="/select/category" method="post">
         <fieldset>
             <legend>Dzień ${dailySelection.date}</legend>
-            <input type="hidden" name="dailySelectionId" value="${dailySelection.id}" />
-            <input type="hidden" name="hikeId" value="${hikeId}" />
+            <input type="hidden" name="dailySelectionId" value="${dailySelection.id}"/>
+            <input type="hidden" name="hikeId" value="${hikeId}"/>
             <label for="categoryId_${dailySelection.id}">Wybierz kategorię:</label>
             <select id="categoryId_${dailySelection.id}" name="categoryId">
                 <option value="" selected>Wybierz kategorię:</option>
@@ -78,7 +78,7 @@
                 </c:forEach>
             </select>
         </fieldset>
-        <br />
+        <br/>
         <button type="submit">Zapisz</button>
     </form>
 </c:forEach>
@@ -86,7 +86,7 @@
     // Funkcja dla wyświetlania tooltipa po najechaniu kursorem na opcję kategorii
     const categorySelects = document.querySelectorAll('.category-select');
     categorySelects.forEach(select => {
-        select.addEventListener('mouseover', function(event) {
+        select.addEventListener('mouseover', function (event) {
             const target = event.target;
             if (target.tagName === 'OPTION') {
                 const description = target.getAttribute('title');

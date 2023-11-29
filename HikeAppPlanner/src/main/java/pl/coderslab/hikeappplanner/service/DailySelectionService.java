@@ -27,22 +27,36 @@ public class DailySelectionService {
     }
 
     public void saveCategoryForDailySelection(Long dailySelectionId, Long categoryId) {
+
+        // pobranie wyboru dziennego i kategorii na podstawie przekazanych identyfikatorów
         Optional<DailySelection> optionalDailySelection = selectionRepository.findById(dailySelectionId);
         Optional<TrailCategory> optionalTrailCategory = categoryRepository.findById(categoryId);
+
+        // pobranie obiektów reprezentujących wybór dzienny i kategorię
         DailySelection dailySelection = optionalDailySelection.get();
         TrailCategory trailCategory = optionalTrailCategory.get();
 
+        // ustawienie kategorii dla danego wyboru dziennego
         dailySelection.setCategory(trailCategory);
+
+        // zapisanie zmian w repozytorium
         selectionRepository.save(dailySelection);
     }
 
     public void saveTrailForDailySelection(Long dailySelectionId, Long trailId) {
+
+        // pobranie wyboru dziennego i szlaków na podstawie przekazanych identyfikatorów
         Optional<DailySelection> optionalDailySelection = selectionRepository.findById(dailySelectionId);
         Optional<Trail> optionalTrail = trailRepository.findById(trailId);
+
+        // pobranie obiektów reprezentujących wybór dzienny i szlak
         DailySelection dailySelection = optionalDailySelection.get();
         Trail trail = optionalTrail.get();
 
+        // ustawienie kategorii dla danego wyboru dziennego
         dailySelection.setTrail(trail);
+
+        // zapisanie zmian w repozytorium
         selectionRepository.save(dailySelection);
     }
 

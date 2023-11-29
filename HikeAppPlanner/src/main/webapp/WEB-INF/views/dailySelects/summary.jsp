@@ -68,7 +68,7 @@
         <th>Szlak</th>
         <th>Kolor szlaku</th>
         <th>Dystans</th>
-        <th>Warunki pogodowe</th>
+        <th>Pogoda</th>
     </tr>
     </thead>
     <tbody>
@@ -83,11 +83,13 @@
             <td>
                 <c:choose>
                     <c:when test="${loop.index < weatherDtoList.size()}">
-                        <span>Temperatura: ${weatherDtoList[loop.index].temperature}</span><br>
-                        <span>Prędkość wiatru: ${weatherDtoList[loop.index].windSpeed}</span><br>
-                        <span>Wilgotność: ${weatherDtoList[loop.index].humidity}</span><br>
+                        <span>Temperatura max.: ${weatherDtoList[loop.index].maxTemperature} °C</span><br>
+                        <span>Temperatura min.: ${weatherDtoList[loop.index].minTemperature} °C</span><br>
+                        <span>Prędkość wiatru: ${weatherDtoList[loop.index].windSpeed} km/h</span><br>
                         <span>Wschód Słońca: ${weatherDtoList[loop.index].sunrise}</span><br>
                         <span>Zachód Słońca: ${weatherDtoList[loop.index].sunset}</span><br>
+                        <span>Warunki pogodowe: ${weatherDtoList[loop.index].conditionText}</span><br>
+                        <img src="${weatherDtoList[loop.index].conditionIcon}" alt="Icon for weather condition">
                     </c:when>
                     <c:otherwise>
                         <span>Brak danych pogodowych</span>
