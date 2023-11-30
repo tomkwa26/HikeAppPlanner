@@ -68,6 +68,8 @@
 </head>
 <body>
 <h1>Utwórz nowy wyjazd</h1>
+
+<!-- Obsługa przypadku wyboru dat z nieodpowiedniego zakresu -->
 <c:if test="${not empty invalidDateMessage}">
     <p style="color: red;">${invalidDateMessage}</p>
 </c:if>
@@ -111,11 +113,7 @@
         if (target.tagName === 'OPTION') {
             const description = target.getAttribute('title');
             if (description) {
-                target.setAttribute('title', ''); // resetowanie atrybutu title
                 alert(description);
-                setTimeout(() => {
-                    target.setAttribute('title', description); // przywrócenie poprzedniego opisu
-                }, 3000); // czas wyświetlania tooltipa
             }
         }
     });

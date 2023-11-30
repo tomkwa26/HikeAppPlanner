@@ -69,12 +69,22 @@
             <legend>Dzień ${dailySelection.date}</legend>
             <input type="hidden" name="dailySelectionId" value="${dailySelection.id}"/>
             <input type="hidden" name="hikeId" value="${hikeId}"/>
-            <label for="categoryId_${dailySelection.id}">Wybierz kategorię:</label>
+
+            <!-- Pole do wyświetlenia wybranej kategorii -->
             <select id="categoryId_${dailySelection.id}" name="categoryId">
-                <option value="" selected>Wybierz kategorię:</option>
+                <option value=""
+                        selected>${dailySelection.category != null ? dailySelection.category.name : "Wybierz kategorię:"}</option>
+                <!-- Jeśli wybrano kategorię, pokaż jej nazwę -->
+                <c:if test="${dailySelection.category != null}">
+                    <option value="${dailySelection.category.id}" selected>${dailySelection.category.name}</option>
+                </c:if>
+
                 <!-- Pobranie dostępnych kategorii dla danego dnia wyprawy -->
                 <c:forEach items="${categories[loop.index]}" var="category">
-                    <option value="${category.id}" title="${category.description}">${category.name}</option>
+                    <!-- Jeśli kategoria nie została jeszcze wybrana, pokaż ją w polu wyboru -->
+                    <c:if test="${dailySelection.category == null}">
+                        <option value="${category.id}" title="${category.description}">${category.name}</option>
+                    </c:if>
                 </c:forEach>
             </select>
         </fieldset>
@@ -83,6 +93,7 @@
     </form>
 </c:forEach>
 <script>
+
     // Funkcja dla wyświetlania tooltipa po najechaniu kursorem na opcję kategorii
     const categorySelects = document.querySelectorAll('.category-select');
     categorySelects.forEach(select => {
@@ -91,11 +102,7 @@
             if (target.tagName === 'OPTION') {
                 const description = target.getAttribute('title');
                 if (description) {
-                    target.setAttribute('title', ''); // resetowanie atrybutu title
                     alert(description);
-                    setTimeout(() => {
-                        target.setAttribute('title', description); // przywrócenie poprzedniego opisu
-                    }, 3000); // czas wyświetlania tooltipa
                 }
             }
         });
