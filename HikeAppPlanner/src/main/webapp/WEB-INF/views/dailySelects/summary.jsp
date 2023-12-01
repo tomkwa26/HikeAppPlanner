@@ -59,6 +59,7 @@
 </head>
 <body>
 <h1>Podsumowanie wyprawy</h1>
+
 <table>
     <thead>
     <tr>
@@ -100,6 +101,7 @@
     </c:forEach>
     </tbody>
 </table>
+
 <div class="button-container">
     <a href="/hike/create" class="new-hike">Utwórz nowy wyjazd</a>
 </div>

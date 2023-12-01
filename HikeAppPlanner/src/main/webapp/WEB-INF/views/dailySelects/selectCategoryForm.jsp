@@ -63,28 +63,27 @@
 </head>
 <body>
 <h1>Wybierz kategorie szlaków</h1>
+
 <c:forEach items="${dailySelections}" var="dailySelection" varStatus="loop">
     <form action="/select/category" method="post">
         <fieldset>
             <legend>Dzień ${dailySelection.date}</legend>
             <input type="hidden" name="dailySelectionId" value="${dailySelection.id}"/>
             <input type="hidden" name="hikeId" value="${hikeId}"/>
-
             <!-- Pole do wyświetlenia wybranej kategorii -->
             <select id="categoryId_${dailySelection.id}" name="categoryId">
-                <option value=""
-                        selected>${dailySelection.category != null ? dailySelection.category.name : "Wybierz kategorię:"}</option>
-                <!-- Jeśli wybrano kategorię, pokaż jej nazwę -->
-                <c:if test="${dailySelection.category != null}">
-                    <option value="${dailySelection.category.id}" selected>${dailySelection.category.name}</option>
-                </c:if>
-
+                <option value="">Wybierz kategorię szlaku:</option>
                 <!-- Pobranie dostępnych kategorii dla danego dnia wyprawy -->
                 <c:forEach items="${categories[loop.index]}" var="category">
-                    <!-- Jeśli kategoria nie została jeszcze wybrana, pokaż ją w polu wyboru -->
-                    <c:if test="${dailySelection.category == null}">
-                        <option value="${category.id}" title="${category.description}">${category.name}</option>
-                    </c:if>
+                    <!-- Jeśli kategoria została wybrana, pokaż jej nazwę -->
+                    <c:choose>
+                        <c:when test="${dailySelection.category != null && dailySelection.category.id eq category.id}">
+                            <option value="${category.id}" selected>${category.name}</option>
+                        </c:when>
+                        <c:otherwise>
+                            <option value="${category.id}" title="${category.description}">${category.name}</option>
+                        </c:otherwise>
+                    </c:choose>
                 </c:forEach>
             </select>
         </fieldset>
@@ -92,6 +91,7 @@
         <button type="submit">Zapisz</button>
     </form>
 </c:forEach>
+
 <script>
 
     // Funkcja dla wyświetlania tooltipa po najechaniu kursorem na opcję kategorii

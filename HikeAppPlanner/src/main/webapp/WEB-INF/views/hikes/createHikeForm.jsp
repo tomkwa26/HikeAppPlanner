@@ -98,12 +98,21 @@
     <hr/>
     <form:button>Utwórz wyjazd</form:button>
 </form:form>
+
 <script>
 
-    // funkcja blokująca możliwość wyboru przeszłej daty
     function setMinEndDate() {
         const startDate = document.getElementById('startDate').value;
-        document.getElementById('endDate').min = startDate;
+        const endDate = document.getElementById('endDate');
+        const endDateValue = endDate.value;
+
+        // Ustawienie minimalnej daty dla daty zakończenia
+        endDate.min = startDate;
+
+        // Sprawdzenie, czy data zakończenia jest wcześniejsza niż data początkowa
+        if (endDateValue < startDate) {
+            endDate.value = ''; // Jeśli tak, wyczyść pole daty zakończenia
+        }
     }
 
     // Funkcja dla wyświetlania tooltipa po najechaniu kursorem na opcję obszaru

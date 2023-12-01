@@ -19,14 +19,16 @@ public class Hike {
     private String name;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "wybierz datę początkową")
     private LocalDate startDate;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "wybierz datę końcową")
     private LocalDate endDate;
 
     @ManyToOne
     @JoinColumn(name = "area_id")
-    @NotNull(message = "pole obszar nie może byc puste")
+    @NotNull(message = "wybierz obszar")
     private Area area;
 
     public Hike() {

@@ -62,6 +62,7 @@
 </head>
 <body>
 <h1>Wybierz szlak</h1>
+
 <c:forEach items="${dailySelections}" var="dailySelection">
     <form action="/select/trail" method="post">
         <fieldset>
@@ -71,32 +72,20 @@
             <input type="hidden" name="categoryId" value="${dailySelection.category.id}"/>
             <label for="trailId_${dailySelection.id}">Wybierz szlak:</label>
             <select id="trailId_${dailySelection.id}" name="trailId">
-
                 <!-- Pole do wyświetlenia wybranego szlaku -->
                 <option value=""
                         selected>${dailySelection.trail != null ? dailySelection.trail.name : "Wybierz szlak:"}</option>
                 <c:if test="${dailySelection.trail != null}">
                     <option value="${dailySelection.trail.id}" selected>${dailySelection.trail.name}</option>
                 </c:if>
-
-                <!-- Brak szlaku dla wybranej kategorii -->
-                <c:choose>
-                    <c:when test="${empty trails[dailySelection.id]}">
-                        <option value="Brak dostępnych szlaków"/>
-                    </c:when>
-                    <c:otherwise>
-
-                        <!-- Pobranie dostępnych szlaków dla danego dnia wyprawy -->
-                        <c:forEach items="${trails[dailySelection.id]}" var="trail">
-                            <!-- Jeśli szlak nie został jeszcze wybrany, pokaż go w polu wyboru -->
-                            <c:if test="${dailySelection.trail == null}">
-                                <option value="${trail.id}" title="${trail.description}">${trail.name}</option>
-                            </c:if>
-                        </c:forEach>
-                    </c:otherwise>
-                </c:choose>
+                <!-- Pobranie dostępnych szlaków dla danego dnia wyprawy -->
+                <c:forEach items="${trails[dailySelection.id]}" var="trail">
+                    <!-- Jeśli szlak nie został jeszcze wybrany, pokaż go w polu wyboru -->
+                    <c:if test="${dailySelection.trail == null}">
+                        <option value="${trail.id}" title="${trail.description}">${trail.name}</option>
+                    </c:if>
+                </c:forEach>
             </select>
-
             <!-- Obsługa przypadku braku szlaków dla wybranej kategorii -->
             <c:if test="${errorMessages[dailySelection.id] != null}">
                 <p style="color: red;">${errorMessages[dailySelection.id]}</p>
@@ -107,6 +96,7 @@
         <button type="submit">Zapisz</button>
     </form>
 </c:forEach>
+
 <script>
 
     // Funkcja dla wyświetlania tooltipa po najechaniu kursorem na opcję szlaku
