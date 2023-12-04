@@ -73,13 +73,6 @@ public class DailySelectionController {
         // zapis wybóru kategorii dla danego dnia wyprawy
         dailySelectionService.saveCategoryForDailySelection(dailySelectionId, categoryId);
 
-        // sprawdzenie, czy jest to ostatni dzień wyprawy
-        if (dailySelectionService.isLastDayOfHike(hikeId, dailySelectionId)) {
-
-            // przekierowanie do akcji wyboru szlaku
-            return "redirect:/select/trail?hikeId=" + hikeId;
-        }
-
         // powrót na widok wyboru kategorii
         return "redirect:/select/category?hikeId=" + hikeId;
     }
@@ -122,13 +115,6 @@ public class DailySelectionController {
 
         // zapis wybóru szlaku dla danego dnia wyprawy
         dailySelectionService.saveTrailForDailySelection(dailySelectionId, trailId);
-
-        // sprawdzenie, czy jest to ostatni dzień wyprawy
-        if (dailySelectionService.isLastDayOfHike(hikeId, dailySelectionId)) {
-
-            // przekierowanie do akcji wyboru szlaku
-            return "redirect:/select/summary?hikeId=" + hikeId;
-        }
 
         // powrót na widok wyboru kategorii
         return "redirect:/select/trail?hikeId=" + hikeId;

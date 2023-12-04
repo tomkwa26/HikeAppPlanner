@@ -12,18 +12,19 @@
     <title>Wybierz szlak</title>
     <style>
         body {
-            background-color: #E6E6E6;
+            background-color: #CCCCCC;
             font-family: Arial, sans-serif;
+            color: #333;
         }
 
         h1 {
             text-align: center;
-            color: #333;
+            color: #CD853F;
         }
 
         form {
-            background-color: #F2F2F2;
-            border: 1px solid #ccc;
+            background-color: #B3B3B3;
+            border: 1px solid #999999;
             border-radius: 5px;
             padding: 20px;
             margin: 0 auto;
@@ -33,6 +34,7 @@
         label {
             display: block;
             margin-top: 10px;
+            color: #222;
         }
 
         input[type="text"],
@@ -41,14 +43,14 @@
             width: 100%;
             padding: 10px;
             margin-top: 5px;
-            border: 1px solid #ccc;
+            border: 1px solid #CCCCCC;
             border-radius: 3px;
             background-color: #D9D9D9;
         }
 
         button {
-            background-color: #007BFF;
-            color: #fff;
+            background-color: #004080;
+            color: #FFFFFF;
             padding: 10px 20px;
             border: none;
             border-radius: 3px;
@@ -56,7 +58,28 @@
         }
 
         button:hover {
-            background-color: #0056b3;
+            background-color: #002B4D;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: right;
+            margin-top: 20px;
+        }
+
+        a {
+            background-color: #D2B48C;
+            color: #222;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            text-decoration: none;
+            margin: 2px;
+            display: inline-block;
+        }
+
+        a.select-summary{
+            background-color: #BC8F8F;
         }
     </style>
 </head>
@@ -88,7 +111,7 @@
             </select>
             <!-- Obsługa przypadku braku szlaków dla wybranej kategorii -->
             <c:if test="${errorMessages[dailySelection.id] != null}">
-                <p style="color: red;">${errorMessages[dailySelection.id]}</p>
+                <p style="color: #E74C3C;">${errorMessages[dailySelection.id]}</p>
                 <a href="/select/category?hikeId=${hikeId}">Wróć do wyboru kategorii szlaków</a>
             </c:if>
         </fieldset>
@@ -96,6 +119,10 @@
         <button type="submit">Zapisz</button>
     </form>
 </c:forEach>
+
+<div class="button-container">
+    <a href="/select/summary?hikeId=${hikeId}" class="select-summary">Przejdź do podsumowania</a>
+</div>
 
 <script>
 

@@ -12,25 +12,27 @@
     <title>Podsumowanie wyprawy</title>
     <style>
         body {
-            background-color: #E6E6E6;
+            background-color: #CCCCCC;
             font-family: Arial, sans-serif;
+            color: #333;
         }
 
         h1 {
             text-align: center;
-            color: #333;
+            color: #8B4513;
         }
 
         table {
-            background-color: #F2F2F2;
+            background-color: #999999;
             border-collapse: collapse;
-            border: 1px solid #ccc;
+            border: 1px solid #666666;
             width: 80%;
             margin: 0 auto;
+            color: #222;
         }
 
         table td, th {
-            border: 1px solid #ccc;
+            border: 1px solid #666666;
             padding: 5px;
             text-align: center;
         }
@@ -42,9 +44,9 @@
         }
 
         a {
-            background-color: #007BFF;
-            color: #fff;
-            padding: 5px 10px;
+            background-color: #D2B48C;
+            color: #222;
+            padding: 10px 20px;
             border: none;
             border-radius: 3px;
             text-decoration: none;
@@ -53,7 +55,7 @@
         }
 
         a.new-hike {
-            background-color: #007BFF;
+            background-color: #BC8F8F;
         }
     </style>
 </head>

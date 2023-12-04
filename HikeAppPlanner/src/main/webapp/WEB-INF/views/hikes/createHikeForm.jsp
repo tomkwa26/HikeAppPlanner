@@ -13,23 +13,24 @@
     <title>Utwórz wyjazd</title>
     <style>
         .error {
-            color: crimson;
+            color: #E74C3C;
             font-weight: normal;
         }
 
         body {
-            background-color: #E6E6E6;
+            background-color: #CCCCCC;
             font-family: Arial, sans-serif;
+            color: #333;
         }
 
         h1 {
             text-align: center;
-            color: #333;
+            color: #8B4513;
         }
 
         form {
-            background-color: #F2F2F2;
-            border: 1px solid #ccc;
+            background-color: #B3B3B3;
+            border: 1px solid #999999;
             border-radius: 5px;
             padding: 20px;
             margin: 0 auto;
@@ -39,6 +40,7 @@
         label {
             display: block;
             margin-top: 10px;
+            color: #222;
         }
 
         input[type="text"],
@@ -47,14 +49,14 @@
             width: 100%;
             padding: 10px;
             margin-top: 5px;
-            border: 1px solid #ccc;
+            border: 1px solid #CCCCCC;
             border-radius: 3px;
             background-color: #D9D9D9;
         }
 
         button {
-            background-color: #007BFF;
-            color: #fff;
+            background-color: #004080;
+            color: #FFFFFF;
             padding: 10px 20px;
             border: none;
             border-radius: 3px;
@@ -62,7 +64,7 @@
         }
 
         button:hover {
-            background-color: #0056b3;
+            background-color: #002B4D;
         }
     </style>
 </head>
@@ -71,7 +73,7 @@
 
 <!-- Obsługa przypadku wyboru dat z nieodpowiedniego zakresu -->
 <c:if test="${not empty invalidDateMessage}">
-    <p style="color: red;">${invalidDateMessage}</p>
+    <p style="color: #E74C3C;">${invalidDateMessage}</p>
 </c:if>
 <form:form method="post" modelAttribute="hike" action="/hike/create">
     <form:hidden path="id"/>
