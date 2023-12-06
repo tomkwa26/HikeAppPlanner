@@ -123,6 +123,8 @@ public class DailySelectionController {
     @GetMapping("/summary")
     public String showSummary(@RequestParam("hikeId") Long hikeId, Model model) {
 
+        Hike hike = hikeRepository.findById(hikeId).orElse(null);
+
         // pobranie wszystkich wyborów użytkownika dla każdego dnia
         List<DailySelection> dailySelections = selectionRepository.findAllByHikeId(hikeId);
 
@@ -144,6 +146,7 @@ public class DailySelectionController {
         // przekazanie danych do modelu
         model.addAttribute("dailySelections", dailySelections);
         model.addAttribute("weatherDtoList", weatherDtoList);
+        model.addAttribute("hikeName", hike != null ? hike.getName(): "Nazwa wyprawy");
         return "dailySelects/summary";
     }
 }

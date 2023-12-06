@@ -20,7 +20,7 @@
 
         h1 {
             text-align: center;
-            color: #A0522D;
+            color: #2E8B57;
         }
 
         form {
@@ -116,7 +116,7 @@
 </c:forEach>
 
 <div class="button-container">
-    <a href="/select/trail?hikeId=${hikeId}" class="select-trail">Przejdź do wyboru szlaku</a>
+    <a href="/select/trail?hikeId=${hikeId}" class="select-trail">Dalej</a>
 </div>
 
 <script>

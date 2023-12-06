@@ -19,7 +19,7 @@
 
         h1 {
             text-align: center;
-            color: #8B4513;
+            color: #2E8B57;
         }
 
         table {
@@ -60,7 +60,7 @@
     </style>
 </head>
 <body>
-<h1>Podsumowanie wyprawy</h1>
+<h1>Podsumowanie wyprawy: ${hikeName}</h1>
 
 <table>
     <thead>

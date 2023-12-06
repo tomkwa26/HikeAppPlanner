@@ -19,7 +19,7 @@
 
         h1 {
             text-align: center;
-            color: #CD853F;
+            color: #2E8B57;
         }
 
         form {
@@ -121,7 +121,7 @@
 </c:forEach>
 
 <div class="button-container">
-    <a href="/select/summary?hikeId=${hikeId}" class="select-summary">Przejdź do podsumowania</a>
+    <a href="/select/summary?hikeId=${hikeId}" class="select-summary">Podsumowanie</a>
 </div>
 
 <script>

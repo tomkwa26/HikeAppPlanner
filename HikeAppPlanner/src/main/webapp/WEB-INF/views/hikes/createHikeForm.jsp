@@ -25,7 +25,7 @@
 
         h1 {
             text-align: center;
-            color: #8B4513;
+            color: #2E8B57;
         }
 
         form {
