@@ -120,6 +120,7 @@ public class DailySelectionController {
         return "redirect:/select/trail?hikeId=" + hikeId;
     }
 
+    // dla płatnej usługi FutureApi
     @GetMapping("/summary")
     public String showSummary(@RequestParam("hikeId") Long hikeId, Model model) {
 
@@ -148,5 +149,38 @@ public class DailySelectionController {
         model.addAttribute("weatherDtoList", weatherDtoList);
         model.addAttribute("hikeName", hike != null ? hike.getName(): "Nazwa wyprawy");
         return "dailySelects/summary";
+    }
+
+    // dla darmowej usługi ForecastApi
+    @GetMapping("/summaryForecast")
+    public String showSummaryForecastApi(@RequestParam("hikeId") Long hikeId, Model model) {
+
+        Hike hike = hikeRepository.findById(hikeId).orElse(null);
+
+        // pobranie wszystkich wyborów użytkownika dla każdego dnia
+        List<DailySelection> dailySelections = selectionRepository.findAllByHikeId(hikeId);
+
+        // zliczanie dni wycieczki
+        int days = dailySelections.size();
+
+        // lista przechowująca dane pogodowe dla każdego dnia
+        List<WeatherDto> weatherDtoList = new ArrayList<>();
+
+        for (DailySelection dailySelection : dailySelections) {
+
+            // pobieranie danych potrzebnych do wywołania WeatherAPIService
+            double lat = dailySelection.getTrail().getStartLat();
+            double lon = dailySelection.getTrail().getStartLon();
+
+            // pobranie danych pogodowych za pomocą WeatherAPIService
+            List<WeatherDto> weatherDtos = weatherAPIService.getWeatherForecastApi(lat, lon, days);
+            weatherDtoList.addAll(weatherDtos);
+        }
+
+        // przekazanie danych do modelu
+        model.addAttribute("dailySelections", dailySelections);
+        model.addAttribute("weatherDtoList", weatherDtoList);
+        model.addAttribute("hikeName", hike != null ? hike.getName(): "Nazwa wyprawy");
+        return "dailySelects/summaryForecastApi";
     }
 }

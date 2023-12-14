@@ -121,24 +121,27 @@
 </c:forEach>
 
 <div class="button-container">
-    <a href="/select/summary?hikeId=${hikeId}" class="select-summary">Podsumowanie</a>
+    <%--dla płatnej usługi FutureApi--%>
+<%--<a href="/select/summary?hikeId=${hikeId}" class="select-summary">Podsumowanie</a>--%>
+    <%--dla darmowej usługi ForecastApi--%>
+<a href="/select/summaryForecast?hikeId=${hikeId}" class="select-summary">Podsumowanie</a>
 </div>
 
 <script>
 
-    // Funkcja dla wyświetlania tooltipa po najechaniu kursorem na opcję szlaku
-    const trailSelects = document.querySelectorAll('.trail-select');
-    trailSelects.forEach(select => {
-        select.addEventListener('mouseover', function (event) {
-            const target = event.target;
-            if (target.tagName === 'OPTION') {
-                const description = target.getAttribute('title');
-                if (description) {
-                    alert(description);
-                }
+// Funkcja dla wyświetlania tooltipa po najechaniu kursorem na opcję szlaku
+const trailSelects = document.querySelectorAll('.trail-select');
+trailSelects.forEach(select => {
+    select.addEventListener('mouseover', function (event) {
+        const target = event.target;
+        if (target.tagName === 'OPTION') {
+            const description = target.getAttribute('title');
+            if (description) {
+                alert(description);
             }
-        });
+        }
     });
+});
 </script>
 </body>
 </html>

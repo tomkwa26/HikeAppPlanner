@@ -59,14 +59,15 @@ public class HikeController {
         LocalDate startDate = hike.getStartDate();
         LocalDate endDate = hike.getEndDate();
 
-        // sprawdzenie, czy wybrana data znajduje się w poprawnym przedziale (ograniczenie API)
-        LocalDate minDate = LocalDate.now().plusDays(14);
-        LocalDate maxDate = LocalDate.now().plusDays(300);
-
-        if (startDate.isBefore(minDate) || endDate.isAfter(maxDate)) {
-            model.addAttribute("invalidDateMessage", "Wybierz datę między " + minDate + " a " + maxDate);
-            return "hikes/createHikeForm";
-        }
+//        // sprawdzenie, czy wybrana data znajduje się w poprawnym przedziale (ograniczenie API)
+//        // dla darmowej usługi ForecastApi to max. 4 dni z dzisiejszym
+//        LocalDate minDate = LocalDate.now().plusDays(0); // dla płatnej usługi FutureApi to 14 dni
+//        LocalDate maxDate = LocalDate.now().plusDays(3); // dla płatnej usługi FutureApi to 300 dni
+//
+//        if (startDate.isBefore(minDate) || endDate.isAfter(maxDate)) {
+//            model.addAttribute("invalidDateMessage", "Wybierz datę między " + minDate + " a " + maxDate);
+//            return "hikes/createHikeForm";
+//        }
 
         // zapisanie wyprawy
         Hike savedHike = hikeRepository.save(hike);

@@ -12,8 +12,6 @@ public class WeatherDayDto {
     private double mintemp_c;
     @JsonProperty("maxwind_kph")
     private double maxwind_kph;
-    @JsonProperty("avghumidity")
-    private int avghumidity;
     @JsonProperty("condition")
     private WeatherConditionDto condition;
 
@@ -27,10 +25,6 @@ public class WeatherDayDto {
 
     public double getMaxwind_kph() {
         return maxwind_kph;
-    }
-
-    public int getAvghumidity() {
-        return avghumidity;
     }
 
     public WeatherConditionDto getCondition() {
