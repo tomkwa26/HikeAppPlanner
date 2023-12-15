@@ -72,9 +72,9 @@
 <h1>Utwórz nowy wyjazd</h1>
 
 <!-- Obsługa przypadku wyboru dat z nieodpowiedniego zakresu w HikeController-->
-<%--<c:if test="${not empty invalidDateMessage}">
+<c:if test="${not empty invalidDateMessage}">
     <p style="color: #E74C3C;">${invalidDateMessage}</p>
-</c:if>--%>
+</c:if>
 <form:form method="post" modelAttribute="hike" action="/hike/create">
     <form:hidden path="id"/>
     <form:label path="name">Nazwa</form:label>
